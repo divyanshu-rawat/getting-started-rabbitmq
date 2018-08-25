@@ -1,24 +1,24 @@
 
 
 const amqp = require('amqplib/callback_api');
+const config = require('./config');
 
-amqp.connect('amqp://localhost:5672', function(err, conn){
-  conn.createChannel((err, ch) =>  {
+amqp.connect(config.rabbit_mq, function(err, conn){
+
+  if(err){
+ 	console.log('err',err);
+   }
+  
+  conn.createChannel(function(err, ch){
 
   	let Q = 'Hello';
   	let message = "Hello World!";
-
   	ch.assertQueue(Q,{durable:false});
-
   	ch.sendToQueue(Q, Buffer.from(message));
-
   	console.log('Message Sent!!');
-
-  	setTimeout(function() { conn.close(); process.exit(0) }, 500);
-
   });
 
-
+  setTimeout(function() { conn.close(); process.exit(0) }, 500);
 
 });
 

@@ -2,11 +2,12 @@
 // ˜˜˜˜∆˚¬√√∂∆∫ß∂ß∫µ ≤µçß˚∆ˆ¬∑∆˜˚≤µ´ ç˜ µ˜˜≥≤   ≤˜∑¨†ƒ©ˆ¨œ˙˚≥≤˜≤ µ≤µß∫
 
 
-var amqp = require('amqplib/callback_api');
+const amqp = require('amqplib/callback_api');
+const config = require('./config');
 
-amqp.connect('amqp://localhost:5672', function(err, conn) {
+amqp.connect(config.rabbit_mq, function(err, conn) {
   conn.createChannel(function(err, ch) {
-    var Q = 'Hello';
+    let Q = 'Hello';
 
     ch.assertQueue(Q, {durable: false});
 
